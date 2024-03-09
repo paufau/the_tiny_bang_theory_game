@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://4mqusn6jm2d8"]
+
+[ext_resource type="Script" path="res://src/scenes/menus/main_menu/main_menu_controller.cs" id="1_auhey"]
+[ext_resource type="PackedScene" uid="uid://c7m8djpm085lf" path="res://src/scenes/game/game.tscn" id="2_gefm0"]
+
+[node name="Main Menu" type="Control" node_paths=PackedStringArray("playButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_auhey")
+playButton = NodePath("Play")
+nextScene = ExtResource("2_gefm0")
+
+[node name="Play" type="Button" parent="."]
+layout_mode = 0
+offset_left = 726.0
+offset_top = 260.0
+offset_right = 1211.0
+offset_bottom = 414.0
+text = "Play"
+
+[node name="Settings" type="Button" parent="."]
+layout_mode = 0
+offset_left = 724.0
+offset_top = 458.0
+offset_right = 1209.0
+offset_bottom = 612.0
+text = "Setting"
+
+[node name="Quit" type="Button" parent="."]
+layout_mode = 0
+offset_left = 725.0
+offset_top = 661.0
+offset_right = 1210.0
+offset_bottom = 815.0
+text = "Quit"

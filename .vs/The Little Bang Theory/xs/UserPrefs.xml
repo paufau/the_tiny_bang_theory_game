@@ -1,0 +1,49 @@
+﻿<Properties>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="src/scenes/game/building_system/BreakProcessor.cs">
+    <Files>
+      <File FileName="src/scenes/menus/main_menu/main_menu_controller.cs" />
+      <File FileName="src/scenes/game/camera/camera_controller.cs" />
+      <File FileName="src/scripts/graph/Graph.cs" />
+      <File FileName="src/scenes/game/navigator/navigation_pathfinder.cs" />
+      <File FileName="src/scenes/game/building_system/BreakProcessor.cs" Line="8" Column="1" />
+      <File FileName="src/scripts/graph/GraphLine.cs" />
+      <File FileName="src/scenes/game/navigator/NavigationPathPoint.cs" />
+      <File FileName="src/scripts/id/IDGenerator.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="The Little Bang Theory" expanded="True">
+            <Node name="The Little Bang Theory">
+              <Node name="src" expanded="True">
+                <Node name="scenes" expanded="True">
+                  <Node name="game" expanded="True">
+                    <Node name="building_system" expanded="True" />
+                    <Node name="camera" expanded="True" />
+                    <Node name="navigator" expanded="True" />
+                    <Node name="pawn" expanded="True" />
+                  </Node>
+                  <Node name="menus" expanded="True">
+                    <Node name="main_menu" expanded="True" />
+                  </Node>
+                </Node>
+                <Node name="scripts" expanded="True">
+                  <Node name="graph" expanded="True">
+                    <Node name="Graph.cs" selected="True" />
+                  </Node>
+                  <Node name="id" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+</Properties>

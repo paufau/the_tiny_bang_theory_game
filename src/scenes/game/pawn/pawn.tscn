@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://d1y67bxof7674"]
+
+[ext_resource type="Script" path="res://src/scenes/game/pawn/pawn_controller.cs" id="1_i3ddt"]
+[ext_resource type="Texture2D" uid="uid://omng0m1icr4o" path="res://src/assets/5.png" id="2_44hxt"]
+[ext_resource type="Script" path="res://src/scenes/game/navigator/navigation_pathfinder.cs" id="3_apvdu"]
+[ext_resource type="Script" path="res://src/scenes/game/pawn/PawnAI.cs" id="4_e1rgu"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lbdua"]
+
+[node name="Pawn" type="CharacterBody2D"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+script = ExtResource("1_i3ddt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_44hxt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+shape = SubResource("CapsuleShape2D_lbdua")
+disabled = true
+
+[node name="NavigationPathfinder" type="Node2D" parent="."]
+script = ExtResource("3_apvdu")
+
+[node name="AI" type="Node" parent="."]
+script = ExtResource("4_e1rgu")

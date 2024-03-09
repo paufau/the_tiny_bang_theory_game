@@ -10,5 +10,8 @@
     <Folder Include="src\scripts\" />
     <Folder Include="src\scripts\graph\" />
     <Folder Include="src\scripts\id\" />
+    <Folder Include="src\scenes\ui\" />
+    <Folder Include="src\scenes\ui\building_ui\" />
+    <Folder Include="src\scenes\game\states\" />
   </ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+using Game.Task;
 using Godot;
 using System;
 
@@ -17,21 +18,29 @@ public partial class BreakProcessor : Node2D
 
     private bool isBreak = true;
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
+    private bool isPressed = false;
+
+    public override void _Input(InputEvent @event)
     {
-        if (Input.IsMouseButtonPressed(MouseButton.Right))
+        if (@event is InputEventMouseButton &&
+            ((InputEventMouseButton)@event).ButtonIndex == MouseButton.Right &&
+            !@event.IsPressed())
         {
             if (isBreak)
             {
-                BreakAt(GetGlobalMousePosition());
-            } else
+                TaskTracker.Instance().PlanTask(new BreakWallTask(GetGlobalMousePosition(), this));
+            }
+            else
             {
                 AddFloatingAt(GetGlobalMousePosition());
             }
-            
         }
+        base._Input(@event);
+    }
 
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta)
+    {
         if (Input.IsKeyPressed(Key.Space))
         {
             isBreak = !isBreak;

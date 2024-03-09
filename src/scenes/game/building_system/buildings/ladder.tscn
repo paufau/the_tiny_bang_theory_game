@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dop8bpwyidgoe"]
+
+[ext_resource type="Script" path="res://src/scenes/game/building_system/buildings/Ladder.cs" id="1_l0h4b"]
+[ext_resource type="Texture2D" uid="uid://iof7aeprqkpf" path="res://src/assets/ladder.png" id="1_s23ij"]
+
+[node name="Ladder" type="Node2D"]
+script = ExtResource("1_l0h4b")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_s23ij")

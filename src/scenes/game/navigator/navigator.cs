@@ -1,3 +1,4 @@
+using Game.State;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
@@ -259,6 +260,7 @@ public partial class navigator : Node2D
 
     public override void _Ready()
     {
+        StatesProvider.NavigatorState = this;
         ConnectGroundedPoints(GetGroundedPoints());
     }
 

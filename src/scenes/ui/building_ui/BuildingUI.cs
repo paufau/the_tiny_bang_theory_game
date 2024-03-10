@@ -17,6 +17,19 @@ public partial class BuildingUI : CanvasLayer
 
     private Actions selectedAction = Actions.NONE;
 
+    public override void _Input(InputEvent @event)
+    {
+        if (@event.IsPressed()) return;
+
+        if (@event is InputEventMouseButton mouse)
+        {
+            if (mouse.ButtonIndex == MouseButton.Right)
+            {
+                selectedAction = Actions.NONE;
+            }
+        }
+    }
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {

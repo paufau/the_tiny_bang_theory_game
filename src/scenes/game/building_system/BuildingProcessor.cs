@@ -41,6 +41,9 @@ public partial class BuildingProcessor : Node2D
             if (activeBuilding != null && mouseButton.ButtonIndex == MouseButton.Left)
             {
                 BuildAt();
+            } else if (activeBuilding != null && mouseButton.ButtonIndex == MouseButton.Right)
+            {
+                ClearBuildingIntent();
             }
         }
     }
@@ -78,5 +81,11 @@ public partial class BuildingProcessor : Node2D
     public void SetBuildingIntent(Building building)
     {
         activeBuilding = InstantiateBuilding(building);
+    }
+
+    public void ClearBuildingIntent()
+    {
+        activeBuilding.QueueFree();
+        activeBuilding = null;
     }
 }

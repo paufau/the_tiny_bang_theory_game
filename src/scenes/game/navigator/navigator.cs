@@ -49,6 +49,11 @@ public partial class navigator : Node2D
         return null;
     }
 
+    public Vector2 SnapToNearestTile(Vector2 global)
+    {
+        return ToGlobal(tileMap.MapToLocal(tileMap.LocalToMap(ToLocal(global))));
+    }
+
     private List<Vector2> GetGroundedPoints()
     {
         List<Vector2> addedPoints = new();
@@ -80,7 +85,6 @@ public partial class navigator : Node2D
     {
         Vector2I iterPoint = new Vector2I((int)mapPoint.X, (int)mapPoint.Y);
         iterPoint.Y++;
-        GD.Print(tileMap.GetUsedRect());
         while (tileMap.GetCellTileData(wallsLayer, iterPoint) == null)
         {
             iterPoint.Y++;
@@ -256,6 +260,39 @@ public partial class navigator : Node2D
         var pointInstance = SafeAddPointInstance(mapPoint);
         pointInstance.isFloating = true;
         ConnectPointInstance(pointInstance);
+    }
+
+    public List<Vector2> GetPath(Vector2 from, Vector2 to)
+    {
+        var destinationPoint = aStar.GetClosestPoint(to);
+        var destinationMapPoint = (Vector2)tileMap.LocalToMap(ToLocal(aStar.GetPointPosition(destinationPoint)));
+        var toMapPoint = (Vector2)tileMap.LocalToMap(ToLocal(to));
+
+        GD.Print(destinationMapPoint, toMapPoint, destinationMapPoint.DistanceTo(toMapPoint));
+
+        if (destinationMapPoint.DistanceTo(toMapPoint) > 3) return new();
+
+        List<Vector2> searchShifts = new()
+        {
+            new Vector2(0.5f, 0.5f),
+            new Vector2(0.5f, -0.5f),
+            new Vector2(-0.5f, 0.5f),
+            new Vector2(-0.5f, -0.5f),
+        };
+
+        foreach (var shift in searchShifts)
+        {
+            var path = aStar.GetPointPath(
+                aStar.GetClosestPoint(from),
+                aStar.GetClosestPoint(ToGlobal(tileMap.MapToLocal((Vector2I)toMapPoint)) + shift * tileMap.TileSet.TileSize)
+            ).ToList();
+
+            if (path.Count > 0) return path;
+        }
+
+        GD.Print("No path found");
+
+        return new();
     }
 
     public override void _Ready()

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbe4jwp0wkd6d"]
+
+[ext_resource type="Texture2D" uid="uid://bjjoixayrpl4m" path="res://src/assets/breaking_mask.png" id="1_yin4x"]
+
+[node name="BreakingMask" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_yin4x")

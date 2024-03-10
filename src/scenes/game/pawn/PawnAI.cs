@@ -14,7 +14,7 @@ namespace Game.Pawn.AI
 		private AbstractTask? active = null;
 		private TaskDoneDelegate? onTaskDone = null;
 
-        public void AddTask(AbstractTask task, TaskDoneDelegate onDone)
+		public void AddTask(AbstractTask task, TaskDoneDelegate onDone)
 		{
 			onTaskDone = onDone;
 			tasks.Enqueue(task);
@@ -25,11 +25,11 @@ namespace Game.Pawn.AI
 			tasks.Enqueue(task);
 		}
 
-        public override void _Process(double delta)
-        {
+		public override void _Process(double delta)
+		{
 			if (active == null)
 			{
-                if (tasks.Count == 0)
+				if (tasks.Count == 0)
 				{
 					if (onTaskDone != null)
 					{
@@ -41,14 +41,14 @@ namespace Game.Pawn.AI
 
 				active = tasks.Dequeue();
 				active.Do();
-            }
+			}
 
 			if (active.IsDone())
 			{
 				active = null;
 			}
-        }
+		}
 
-    }
+	}
 }
 

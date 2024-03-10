@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://src/scenes/game/navigator/navigator.cs" id="3_ewgdi"]
 [ext_resource type="PackedScene" uid="uid://d1y67bxof7674" path="res://src/scenes/game/pawn/pawn.tscn" id="5_kovca"]
 [ext_resource type="Script" path="res://src/scenes/game/building_system/BuildingProcessor.cs" id="6_clhs6"]
-[ext_resource type="PackedScene" uid="uid://dop8bpwyidgoe" path="res://src/scenes/game/building_system/buildings/ladder.tscn" id="6_si4hi"]
+[ext_resource type="Script" path="res://src/scenes/game/tasks/TaskAssigner.cs" id="9_kebty"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yswkt"]
 texture = ExtResource("1_586tl")
@@ -981,8 +981,6 @@ nav = NodePath("../../Navigator")
 [node name="BuildingProcessor" type="Node2D" parent="World/TileMap"]
 script = ExtResource("6_clhs6")
 
-[node name="Ladder" parent="World/TileMap" instance=ExtResource("6_si4hi")]
-
 [node name="Navigator" type="Node2D" parent="World" node_paths=PackedStringArray("tileMap") groups=["navigator"]]
 script = ExtResource("3_ewgdi")
 tileMap = NodePath("../TileMap")
@@ -992,3 +990,6 @@ position = Vector2(559, 428)
 
 [node name="Pawn2" parent="World" instance=ExtResource("5_kovca")]
 position = Vector2(590, 428)
+
+[node name="TaskAssigner" type="Node2D" parent="World"]
+script = ExtResource("9_kebty")

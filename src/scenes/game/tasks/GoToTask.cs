@@ -29,6 +29,7 @@ namespace Game.Task
 
         public GoToTask(Vector2 position)
         {
+            SetSource(position);
             goToPosition = position;
         }
     }

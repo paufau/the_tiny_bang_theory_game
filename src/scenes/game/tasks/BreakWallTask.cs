@@ -1,4 +1,5 @@
 ﻿using Game.Pawn.AI;
+using Game.State;
 using Godot;
 
 namespace Game.Task
@@ -8,6 +9,8 @@ namespace Game.Task
         private Vector2 wallPosition;
         private BreakProcessor breakProcessor;
         private bool isWallBroken = false;
+        private PackedScene breakingMask;
+        private Node2D breakingMaskInstance;
 
         public override void Do()
         {
@@ -22,6 +25,11 @@ namespace Game.Task
 
         public override bool IsDone()
         {
+            if (isWallBroken && breakingMaskInstance != null)
+            {
+                breakingMaskInstance.QueueFree();
+                breakingMaskInstance = null;
+            }
             return isWallBroken;
         }
 
@@ -34,8 +42,14 @@ namespace Game.Task
 
         public BreakWallTask(Vector2 wallPosition, BreakProcessor breakProcessor)
         {
+            breakingMask = ResourceLoader.Load<PackedScene>("res://src/scenes/game/building_system/BreakingMask.tscn");
+            breakingMaskInstance = (Node2D)breakingMask.Instantiate();
+            breakingMaskInstance.GlobalPosition = StatesProvider.NavigatorState.SnapToNearestTile(wallPosition);
+            breakProcessor.AddChild(breakingMaskInstance);
+
             this.wallPosition = wallPosition;
             this.breakProcessor = breakProcessor;
+            SetSource(wallPosition);
         }
     }
 }

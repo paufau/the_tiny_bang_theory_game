@@ -1,4 +1,6 @@
 ﻿
+using Godot;
+
 namespace Game.State
 {
 	public static class StatesProvider

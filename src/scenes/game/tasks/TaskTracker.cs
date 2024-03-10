@@ -1,3 +1,4 @@
+using Game.Pawn.AI;
 using Game.Task;
 using Godot;
 using System;
@@ -21,7 +22,7 @@ public class TaskTracker
     private List<pawn_controller> busyPawns = new();
     private List<pawn_controller> freePawns = new();
 
-    private List<AbstractTask> pendingTasks = new();
+    public List<AbstractTask> pendingTasks = new();
 
     public void AddPawn(pawn_controller pawn)
     {
@@ -34,30 +35,44 @@ public class TaskTracker
         AssignPendingTask();
     }
 
+    public AbstractTask? GetAvailableTaskFor(pawn_controller pawn)
+    {
+        foreach (var task in pendingTasks)
+        {
+            if (task.IsSourceReachable(pawn.GlobalPosition))
+            {
+                return task;
+            }
+        }
+
+        return null;
+    }
+
     public void AssignPendingTask()
     {
         GD.Print("TASK", freePawns.Count, pendingTasks.Count);
         if (freePawns.Count == 0) return;
         if (pendingTasks.Count == 0) return;
 
-        var pawn = freePawns.First();
-        var task = pendingTasks.First();
-
-        task.Plan(pawn);
-
-        pendingTasks.Remove(task);
-        freePawns.Remove(pawn);
-        busyPawns.Add(pawn);
-
-        pawn.AI.AddTask(task, () =>
+        foreach (var pawn in new List<pawn_controller>(freePawns))
         {
-            GD.Print("IS DONE");
-            busyPawns.Remove(pawn);
-            freePawns.Add(pawn);
-            Task.Run(() =>
+            var task = GetAvailableTaskFor(pawn);
+
+            GD.Print("No tasks found");
+
+            if (task == null) return;
+
+            task.Plan(pawn);
+
+            pendingTasks.Remove(task);
+            freePawns.Remove(pawn);
+            busyPawns.Add(pawn);
+
+            pawn.AI.AddTask(task, () =>
             {
-                AssignPendingTask();
+                busyPawns.Remove(pawn);
+                freePawns.Add(pawn);
             });
-        });
+        }
     }
 }

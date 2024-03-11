@@ -13,5 +13,7 @@
     <Folder Include="src\scenes\ui\" />
     <Folder Include="src\scenes\ui\building_ui\" />
     <Folder Include="src\scenes\game\states\" />
+    <Folder Include="src\scenes\game\states\rocks\" />
+    <Folder Include="src\scenes\game\input_system\" />
   </ItemGroup>
 </Project>

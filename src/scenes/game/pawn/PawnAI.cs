@@ -45,6 +45,7 @@ namespace Game.Pawn.AI
 
 			if (active.IsDone())
 			{
+				active.Complete();
 				active = null;
 			}
 		}

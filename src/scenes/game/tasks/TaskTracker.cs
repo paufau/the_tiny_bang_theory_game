@@ -50,7 +50,6 @@ public class TaskTracker
 
     public void AssignPendingTask()
     {
-        GD.Print("TASK", freePawns.Count, pendingTasks.Count);
         if (freePawns.Count == 0) return;
         if (pendingTasks.Count == 0) return;
 
@@ -60,7 +59,10 @@ public class TaskTracker
 
             GD.Print("No tasks found");
 
-            if (task == null) return;
+            if (task == null)
+            {
+                task = new RelaxTask();
+            };
 
             task.Plan(pawn);
 

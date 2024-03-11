@@ -51,7 +51,17 @@ public partial class navigator : Node2D
 
     public Vector2 SnapToNearestTile(Vector2 global)
     {
-        return ToGlobal(tileMap.MapToLocal(tileMap.LocalToMap(ToLocal(global))));
+        return ToGlobalCoords(ToMapCoords(global));
+    }
+
+    public Vector2I ToMapCoords(Vector2 global)
+    {
+        return tileMap.LocalToMap(ToLocal(global));
+    }
+
+    public Vector2 ToGlobalCoords(Vector2I map)
+    {
+        return ToGlobal(tileMap.MapToLocal(map));
     }
 
     private List<Vector2> GetGroundedPoints()

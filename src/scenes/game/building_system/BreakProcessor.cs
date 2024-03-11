@@ -16,45 +16,54 @@ public partial class BreakProcessor : Node2D
         tileMap = GetParent<TileMap>();
     }
 
-    private bool isBreak = true;
+    private bool isBreakingEnabled = false;
 
-    private bool isPressed = false;
+    public void EnableBreaking()
+    {
+        isBreakingEnabled = true;
+    }
 
     public override void _Input(InputEvent @event)
     {
-        if (@event is InputEventMouseButton &&
-            ((InputEventMouseButton)@event).ButtonIndex == MouseButton.Right &&
-            !@event.IsPressed())
+        if (@event.IsPressed()) return;
+
+        if (@event is InputEventMouseButton mouseButton)
         {
-            if (isBreak)
+            if (mouseButton.ButtonIndex == MouseButton.Right)
+            {
+                isBreakingEnabled = false;
+            } else if (mouseButton.ButtonIndex == MouseButton.Left && isBreakingEnabled)
             {
                 TaskTracker.Instance().PlanTask(new BreakWallTask(GetGlobalMousePosition(), this));
             }
-            else
-            {
-                AddFloatingAt(GetGlobalMousePosition());
-            }
         }
-        base._Input(@event);
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        if (Input.IsKeyPressed(Key.Space))
+        if (isBreakingEnabled)
         {
-            isBreak = !isBreak;
+            QueueRedraw();
         }
+    }
+
+    public override void _Draw()
+    {
+        if (!isBreakingEnabled) return;
+
+        var position = nav.SnapToNearestTile(GetGlobalMousePosition());
+        var tileSize = tileMap.TileSet.TileSize;
+
+        DrawRect(
+            new Rect2(position - tileSize / 2, tileSize),
+            Colors.DarkOrange
+        );
     }
 
     public void BreakAt(Vector2 point)
     {
         tileMap.EraseCell(wallsLayer, tileMap.LocalToMap(ToLocal(point)));
         nav.AddPoint(point);
-    }
-
-    public void AddFloatingAt(Vector2 point)
-    {
-        nav.AddFloatingPoint(point);
     }
 }

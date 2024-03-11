@@ -6,6 +6,7 @@ namespace Game.Task
 {
     public class BreakWallTask : AbstractTask
     {
+        private pawn_controller pawn;
         private Vector2 wallPosition;
         private BreakProcessor breakProcessor;
         private bool isWallBroken = false;
@@ -14,8 +15,24 @@ namespace Game.Task
 
         public override void Do()
         {
-            isWallBroken = true;
             breakProcessor.BreakAt(wallPosition);
+
+            var box = StatesProvider.world.GetNearestInGroup("boxes", pawn.GlobalPosition);
+
+            GD.Print("BOX: ", box);
+
+            if (box != null)
+            {
+                var goToBox = new GoToTask(box.GlobalPosition);
+                goToBox.Plan(pawn);
+                goToBox.OnDone(() =>
+                {
+                    StatesProvider.Rocks.Add(1);
+                });
+                pawn.AI.AddTask(goToBox);
+            }
+
+            isWallBroken = true;
         }
 
         public override int GetPriority()
@@ -35,6 +52,7 @@ namespace Game.Task
 
         public override void Plan(pawn_controller pawn)
         {
+            this.pawn = pawn;
             var goToTask = new GoToTask(wallPosition);
             goToTask.Plan(pawn);
             pawn.AI.AddTask(goToTask);

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b87fy6a74takt"]
+
+[ext_resource type="Texture2D" uid="uid://bekqm744mbr3t" path="res://src/assets/sofa.png" id="1_xr2o8"]
+
+[node name="Bed" type="Node2D" groups=["beds"]]
+position = Vector2(2.08165e-12, 2.08165e-12)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(16, -8)
+texture = ExtResource("1_xr2o8")

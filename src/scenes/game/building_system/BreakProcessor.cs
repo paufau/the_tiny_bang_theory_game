@@ -1,3 +1,4 @@
+using Game.InputSystem;
 using Game.Task;
 using Godot;
 using System;
@@ -27,16 +28,18 @@ public partial class BreakProcessor : Node2D
     {
         if (@event.IsPressed()) return;
 
-        if (@event is InputEventMouseButton mouseButton)
+        InputProcessor.OnGameClick(@event, (InputEventMouseButton mouseButton) =>
         {
             if (mouseButton.ButtonIndex == MouseButton.Right)
             {
                 isBreakingEnabled = false;
-            } else if (mouseButton.ButtonIndex == MouseButton.Left && isBreakingEnabled)
+                QueueRedraw();
+            }
+            else if (mouseButton.ButtonIndex == MouseButton.Left && isBreakingEnabled)
             {
                 TaskTracker.Instance().PlanTask(new BreakWallTask(GetGlobalMousePosition(), this));
             }
-        }
+        });
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.

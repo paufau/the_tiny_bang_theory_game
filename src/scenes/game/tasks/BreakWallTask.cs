@@ -17,9 +17,7 @@ namespace Game.Task
         {
             breakProcessor.BreakAt(wallPosition);
 
-            var box = StatesProvider.world.GetNearestInGroup("boxes", pawn.GlobalPosition);
-
-            GD.Print("BOX: ", box);
+            var box = StatesProvider.world.GetNearestInGroup("boxes_placed", pawn.GlobalPosition);
 
             if (box != null)
             {

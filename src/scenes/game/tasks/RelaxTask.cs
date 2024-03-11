@@ -1,4 +1,5 @@
 ﻿using Game.State;
+using Godot;
 
 namespace Game.Task
 {
@@ -23,7 +24,7 @@ namespace Game.Task
 
         public override void Plan(pawn_controller pawn)
         {
-            var bed = StatesProvider.world.GetNearestInGroup("beds", pawn.GlobalPosition);
+            var bed = StatesProvider.world.GetNearestInGroup("beds_placed", pawn.GlobalPosition);
             if (bed == null) return;
 
             var goToBed = new GoToTask(bed.GlobalPosition);

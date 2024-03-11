@@ -50,14 +50,12 @@ public class TaskTracker
 
     public void AssignPendingTask()
     {
-        if (freePawns.Count == 0) return;
-        if (pendingTasks.Count == 0) return;
+        //if (freePawns.Count == 0) return;
+        //if (pendingTasks.Count == 0) return;
 
         foreach (var pawn in new List<pawn_controller>(freePawns))
         {
             var task = GetAvailableTaskFor(pawn);
-
-            GD.Print("No tasks found");
 
             if (task == null)
             {

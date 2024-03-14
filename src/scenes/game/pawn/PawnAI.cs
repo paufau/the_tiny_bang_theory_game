@@ -25,6 +25,18 @@ namespace Game.Pawn.AI
 			tasks.Enqueue(task);
 		}
 
+		public void TerminateAllPlanned()
+		{
+			if (onTaskDone != null)
+			{
+				onTaskDone();
+			}
+
+			tasks = new();
+			active = null;
+			onTaskDone = null;
+		}
+
 		public override void _Process(double delta)
 		{
 			if (active == null)

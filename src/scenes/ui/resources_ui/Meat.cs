@@ -1,11 +1,11 @@
 using Game.State;
 using Godot;
 
-public partial class Rocks : HBoxContainer
+public partial class Meat : HBoxContainer
 {
     private AbstractStore<int> GetStore()
     {
-        return StatesProvider.Rocks;
+        return StatesProvider.Meat;
     }
 
     private Label countLabel;

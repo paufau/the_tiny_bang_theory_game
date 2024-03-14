@@ -5,11 +5,9 @@ namespace Game.Task
 {
 	public class RelaxTask : AbstractTask
 	{
-        private bool isRelaxed = false;
-
         public override void Do()
         {
-            isRelaxed = true;
+
         }
 
         public override int GetPriority()
@@ -19,7 +17,7 @@ namespace Game.Task
 
         public override bool IsDone()
         {
-            return isRelaxed;
+            return true;
         }
 
         public override void Plan(pawn_controller pawn)
@@ -30,6 +28,10 @@ namespace Game.Task
             var goToBed = new GoToTask(bed.GlobalPosition);
             goToBed.Plan(pawn);
             pawn.AI.AddTask(goToBed);
+
+            var waitTask = new WaitTask(5);
+            waitTask.Plan(pawn);
+            pawn.AI.AddTask(waitTask);
         }
     }
 }

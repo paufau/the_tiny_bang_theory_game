@@ -4,5 +4,10 @@
 	{
 		public void OnBuild();
 	}
+
+	public interface IBreakHandler
+	{
+		public void OnBreak();
+	}
 }
 

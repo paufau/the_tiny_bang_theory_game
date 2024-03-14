@@ -49,6 +49,11 @@ public partial class navigator : Node2D
         return null;
     }
 
+    public Vector2 GetRandomPointGlobalPosition()
+    {
+        return ToGlobalCoords((Vector2I)aStarGraphRepresentation.Nodes.PickRandom().position);
+    }
+
     public Vector2 SnapToNearestTile(Vector2 global)
     {
         return ToGlobalCoords(ToMapCoords(global));
@@ -184,7 +189,7 @@ public partial class navigator : Node2D
     private void DisconnectPoint(Vector2 mapPoint)
     {
         var pointInstance = GetInstance(mapPoint);
-        if (pointInstance == null) return;
+        if (pointInstance == null || pointInstance.isFloating) return;
 
         aStar.RemovePoint(pointInstance.id);
         aStarGraphRepresentation.RemoveNode(pointInstance);
@@ -278,8 +283,6 @@ public partial class navigator : Node2D
         var destinationMapPoint = (Vector2)tileMap.LocalToMap(ToLocal(aStar.GetPointPosition(destinationPoint)));
         var toMapPoint = (Vector2)tileMap.LocalToMap(ToLocal(to));
 
-        GD.Print(destinationMapPoint, toMapPoint, destinationMapPoint.DistanceTo(toMapPoint));
-
         if (destinationMapPoint.DistanceTo(toMapPoint) > 3) return new();
 
         List<Vector2> searchShifts = new()
@@ -299,8 +302,6 @@ public partial class navigator : Node2D
 
             if (path.Count > 0) return path;
         }
-
-        GD.Print("No path found");
 
         return new();
     }

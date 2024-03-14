@@ -16,6 +16,11 @@ namespace Game.Task
 
 		private List<Action>? onDoneActions = null;
 
+		public virtual bool IsReadyForAssigning()
+		{
+			return true;
+		}
+
 		public void OnDone(Action action)
 		{
 			if (onDoneActions == null)

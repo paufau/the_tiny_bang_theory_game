@@ -39,7 +39,8 @@ public class TaskTracker
     {
         foreach (var task in pendingTasks)
         {
-            if (task.IsSourceReachable(pawn.GlobalPosition))
+            GD.Print(task.IsSourceReachable(pawn.GlobalPosition), task.IsReadyForAssigning());
+            if (task.IsSourceReachable(pawn.GlobalPosition) && task.IsReadyForAssigning())
             {
                 return task;
             }

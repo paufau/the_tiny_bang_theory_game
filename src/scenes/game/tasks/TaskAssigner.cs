@@ -3,7 +3,7 @@ using System;
 
 public partial class TaskAssigner : Node2D
 {
-    private double intervalSeconds = 0.5;
+    private double intervalSeconds = 0.1;
     private double lastCall = 0;
 
     // Called when the node enters the scene tree for the first time.

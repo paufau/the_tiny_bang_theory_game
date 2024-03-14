@@ -56,6 +56,19 @@ public partial class BuildingProcessor : Node2D
         }
     }
 
+    public class B_Furnace : Building
+    {
+        public override PackedScene GetScene()
+        {
+            return ResourceLoader.Load<PackedScene>("res://src/scenes/game/building_system/buildings/Furnace.tscn");
+        }
+
+        public override Vector2I GetSize()
+        {
+            return new Vector2I(1, 2);
+        }
+    }
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {

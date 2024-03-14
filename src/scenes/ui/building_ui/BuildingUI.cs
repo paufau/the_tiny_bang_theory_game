@@ -1,4 +1,5 @@
 using Game.InputSystem;
+using Game.State;
 using Godot;
 using System;
 
@@ -21,6 +22,10 @@ public partial class BuildingUI : CanvasLayer
     private InputProcessor buildBedProcessor;
 
     [Export]
+    private Button buildFurnaceButton;
+    private InputProcessor buildFurnaceProcessor;
+
+    [Export]
     private BuildingProcessor buildingProcessor;
 
     [Export]
@@ -29,6 +34,8 @@ public partial class BuildingUI : CanvasLayer
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        StatesProvider.buildingUI = this;
+
         digInputProcessor = new(digButton, () =>
         {
             diggingProcessor.EnableBreaking();
@@ -48,6 +55,11 @@ public partial class BuildingUI : CanvasLayer
         {
             buildingProcessor.SetBuildingIntent(new BuildingProcessor.B_Bed());
         });
+
+        buildFurnaceProcessor = new(buildFurnaceButton, () =>
+        {
+            buildingProcessor.SetBuildingIntent(new BuildingProcessor.B_Furnace());
+        });
     }
 
     public override void _ExitTree()
@@ -56,6 +68,7 @@ public partial class BuildingUI : CanvasLayer
         buildBoxProcessor.Dispose();
         buildLadderProcessor.Dispose();
         buildBedProcessor.Dispose();
+        buildFurnaceProcessor.Dispose();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.

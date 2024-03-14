@@ -1,6 +1,8 @@
 using Game.InputSystem;
+using Game.State;
 using Game.Task;
 using Godot;
+using Godot.Collections;
 using System;
 
 public partial class BreakProcessor : Node2D
@@ -10,6 +12,8 @@ public partial class BreakProcessor : Node2D
 
     [Export]
     private navigator nav;
+
+    private Dictionary<int, bool> plannedBreakings = new();
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -37,9 +41,42 @@ public partial class BreakProcessor : Node2D
             }
             else if (mouseButton.ButtonIndex == MouseButton.Left && isBreakingEnabled)
             {
-                TaskTracker.Instance().PlanTask(new BreakWallTask(GetGlobalMousePosition(), this));
+                ScheduleDiggingTask();
             }
         });
+    }
+
+    private int GetTaskKey(Vector2 position)
+    {
+        return (int)(position.X * 1000 + position.Y);
+    }
+
+    private void ScheduleDiggingTask()
+    {
+        var mousePosition = GetGlobalMousePosition();
+        var tilePotision = nav.ToMapCoords(mousePosition);
+
+        var tileSourceId = tileMap.GetCellSourceId(wallsLayer, tilePotision);
+        var tileSourceAtlasCoords = tileMap.GetCellAtlasCoords(wallsLayer, tilePotision);
+
+        var taskKey = GetTaskKey(tilePotision);
+
+        if (tileSourceId == -1 || plannedBreakings.TryGetValue(taskKey, out _)) return;
+
+        plannedBreakings.Add(taskKey, true);
+
+        var breakWallTask = new BreakWallTask(GetGlobalMousePosition(), this, () =>
+        {
+            if (tileSourceId == 0 && tileSourceAtlasCoords == new Vector2I(39, 54))
+            {
+                StatesProvider.Fuel.Update(prev => prev + 1);
+            } else
+            {
+                StatesProvider.Rocks.Update(prev => prev + 1);
+            }
+        });
+
+        TaskTracker.Instance().PlanTask(breakWallTask);
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -66,7 +103,15 @@ public partial class BreakProcessor : Node2D
 
     public void BreakAt(Vector2 point)
     {
-        tileMap.EraseCell(wallsLayer, tileMap.LocalToMap(ToLocal(point)));
+        var tilePosition = tileMap.LocalToMap(ToLocal(point));
+        var taskKey = GetTaskKey(tilePosition);
+
+        if (plannedBreakings.TryGetValue(taskKey, out _))
+        {
+            plannedBreakings.Remove(taskKey);
+        }
+
+        tileMap.EraseCell(wallsLayer, tilePosition);
         nav.AddPoint(point);
     }
 }

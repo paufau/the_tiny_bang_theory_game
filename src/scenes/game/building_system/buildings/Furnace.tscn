@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://d33o3rcum4g1j"]
+
+[ext_resource type="Texture2D" uid="uid://dwv7epkiwkuww" path="res://src/assets/furnace.png" id="1_k7xck"]
+[ext_resource type="Script" path="res://src/scenes/game/building_system/buildings/Furnace.cs" id="1_ys2yu"]
+
+[node name="Furnace" type="Node2D" groups=["furnace"]]
+position = Vector2(-3, 3)
+script = ExtResource("1_ys2yu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(4, -12)
+texture = ExtResource("1_k7xck")

@@ -19,17 +19,23 @@ namespace Game.Task
         {
             breakProcessor.BreakAt(wallPosition);
 
+            if (breakingMaskInstance != null)
+            {
+                breakingMaskInstance.QueueFree();
+                breakingMaskInstance = null;
+            }
+
             var box = StatesProvider.world.GetNearestInGroup("boxes_placed", pawn.GlobalPosition);
 
             if (box != null)
             {
                 var goToBox = new GoToTask(box.GlobalPosition);
                 goToBox.Plan(pawn);
-                goToBox.OnDone(onGainResource);
+                goToBox.OnSucceed(onGainResource);
                 pawn.AI.AddTask(goToBox);
             } else
             {
-                StatesProvider.alert.ShowAlert("Resource is lost! Build a box in order to save it.");
+                //StatesProvider.alert.ShowAlert("Resource is lost! Build a box in order to save it.");
             }
 
             isWallBroken = true;
@@ -42,11 +48,6 @@ namespace Game.Task
 
         public override bool IsDone()
         {
-            if (isWallBroken && breakingMaskInstance != null)
-            {
-                breakingMaskInstance.QueueFree();
-                breakingMaskInstance = null;
-            }
             return isWallBroken;
         }
 

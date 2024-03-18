@@ -14,30 +14,40 @@ namespace Game.Task
 		public abstract void Do();
 		public abstract bool IsDone();
 
-		private List<Action>? onDoneActions = null;
+		private List<Action>? onSucceedActions = null;
+		private List<Action>? onFinishedActions = null;
 
 		public virtual bool IsReadyForAssigning()
 		{
 			return true;
 		}
 
-		public void OnDone(Action action)
+		public void OnSucceed(Action action)
 		{
-			if (onDoneActions == null)
+			if (onSucceedActions == null)
 			{
-				onDoneActions = new();
+				onSucceedActions = new();
 			}
-			onDoneActions.Add(action);
+			onSucceedActions.Add(action);
+		}
+
+		public void OnFinish(Action action)
+		{
+			if (onFinishedActions == null)
+			{
+				onFinishedActions = new();
+			}
+            onFinishedActions.Add(action);
 		}
 
 		public void Complete()
 		{
-			if (onDoneActions == null) return;
-			foreach(var action in onDoneActions)
+			if (onSucceedActions == null) return;
+			foreach(var action in onSucceedActions)
 			{
 				action.Invoke();
 			}
-			onDoneActions = null;
+			onSucceedActions = null;
 		}
 
 		public Vector2 sourcePosition;
@@ -48,6 +58,16 @@ namespace Game.Task
 		{
 			return StatesProvider.NavigatorState.GetPath(from, sourcePosition).Count > 0;
 		}
-	}
+
+        public void Finish()
+        {
+			if (onFinishedActions == null) return;
+			foreach(var action in onFinishedActions)
+			{
+				action.Invoke();
+			}
+			onFinishedActions = null;
+        }
+    }
 }
 

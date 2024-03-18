@@ -1,19 +1,30 @@
 using Game.State;
 using Godot;
 
-public partial class Rocks : HBoxContainer
+public partial class ResourceUI : HBoxContainer
 {
-    private AbstractStore<int> GetStore()
+    public void Configure(AbstractStore<int> store)
     {
-        return StatesProvider.Rocks;
+        this.store = store;
     }
 
+    private AbstractStore<int> GetStore()
+    {
+        return store;
+    }
+
+    private Label titleLabel;
     private Label countLabel;
+    private AbstractStore<int> store;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         countLabel = GetNode<Label>("Count");
+        titleLabel = GetNode<Label>("Title");
+
+        titleLabel.Text = store.GetTitle() + ": ";
+
         GetStore().OnUpdate += UpdateCount;
         UpdateCount(GetStore().value);
     }

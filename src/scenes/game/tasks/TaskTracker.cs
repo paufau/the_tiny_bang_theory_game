@@ -39,7 +39,6 @@ public class TaskTracker
     {
         foreach (var task in pendingTasks)
         {
-            GD.Print(task.IsSourceReachable(pawn.GlobalPosition), task.IsReadyForAssigning());
             if (task.IsSourceReachable(pawn.GlobalPosition) && task.IsReadyForAssigning())
             {
                 return task;
@@ -51,9 +50,6 @@ public class TaskTracker
 
     public void AssignPendingTask()
     {
-        //if (freePawns.Count == 0) return;
-        //if (pendingTasks.Count == 0) return;
-
         foreach (var pawn in new List<pawn_controller>(freePawns))
         {
             var task = GetAvailableTaskFor(pawn);
@@ -69,7 +65,9 @@ public class TaskTracker
             freePawns.Remove(pawn);
             busyPawns.Add(pawn);
 
-            pawn.AI.AddTask(task, () =>
+            pawn.AI.AddTask(task);
+
+            task.OnFinish(() =>
             {
                 busyPawns.Remove(pawn);
                 freePawns.Add(pawn);

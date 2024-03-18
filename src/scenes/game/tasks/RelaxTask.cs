@@ -28,10 +28,6 @@ namespace Game.Task
             var goToBed = new GoToTask(bed.GlobalPosition);
             goToBed.Plan(pawn);
             pawn.AI.AddTask(goToBed);
-
-            var waitTask = new WaitTask(5);
-            waitTask.Plan(pawn);
-            pawn.AI.AddTask(waitTask);
         }
     }
 }

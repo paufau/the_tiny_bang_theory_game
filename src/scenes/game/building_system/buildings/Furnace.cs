@@ -16,7 +16,7 @@ public partial class Furnace : Node2D
         cookMeatTask = new CookMeatTask();
         cookMeatTask.SetSource(GlobalPosition);
 
-        cookMeatTask.OnDone(PlanTask);
+        cookMeatTask.OnFinish(PlanTask);
 
         TaskTracker.Instance().PlanTask(cookMeatTask);
     }

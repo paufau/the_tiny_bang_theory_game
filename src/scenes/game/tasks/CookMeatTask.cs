@@ -28,8 +28,7 @@ namespace Game.Task
 
         public override bool IsReadyForAssigning()
         {
-            var box = StatesProvider.world.GetNearestInGroup("box_placed",
-                StatesProvider.NavigatorState.GetRandomPointGlobalPosition());
+            var box = StatesProvider.world.GetNearestInGroup("box_placed", sourcePosition);
 
             return StatesProvider.Meat.value > 0 && box != null;
         }
@@ -46,7 +45,7 @@ namespace Game.Task
             var goToStore1 = new GoToTask(box.GlobalPosition);
             goToStore1.Plan(pawn);
             pawn.AI.AddTask(goToStore1);
-            goToStore1.OnDone(() =>
+            goToStore1.OnSucceed(() =>
             {
                 if (!IsReadyForAssigning())
                 {
@@ -63,7 +62,7 @@ namespace Game.Task
             var waitTask = new WaitTask(4);
             waitTask.Plan(pawn);
             pawn.AI.AddTask(waitTask);
-            waitTask.OnDone(() =>
+            waitTask.OnSucceed(() =>
             {
                 box = StatesProvider.world.GetNearestInGroup("box_placed", pawn.GlobalPosition);
                 if (box == null)
@@ -76,7 +75,7 @@ namespace Game.Task
             var goToStore2 = new GoToTask(box.GlobalPosition);
             goToStore2.Plan(pawn);
             pawn.AI.AddTask(goToStore2);
-            goToStore2.OnDone(() =>
+            goToStore2.OnSucceed(() =>
             {
                 StatesProvider.CookedMeat.Update(prev => prev + 1);
             });

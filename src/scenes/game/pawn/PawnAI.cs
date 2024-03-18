@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
+using Game.State;
 using Game.Task;
 using Godot;
 
@@ -8,13 +11,12 @@ namespace Game.Pawn.AI
 {
 	public partial class PawnAI : Node
 	{
-		public delegate void TaskDoneDelegate();
-
 		private Queue<AbstractTask> tasks = new();
 		private AbstractTask? active = null;
-		private TaskDoneDelegate? onTaskDone = null;
+		private Action? onTaskDone = null;
+		private bool shouldTerminate = false;
 
-		public void AddTask(AbstractTask task, TaskDoneDelegate onDone)
+		public void AddTask(AbstractTask task, Action onDone)
 		{
 			onTaskDone = onDone;
 			tasks.Enqueue(task);
@@ -27,15 +29,24 @@ namespace Game.Pawn.AI
 
 		public void TerminateAllPlanned()
 		{
-			if (onTaskDone != null)
-			{
-				onTaskDone();
-			}
-
-			tasks = new();
-			active = null;
-			onTaskDone = null;
+			shouldTerminate = true;
 		}
+
+		private void _Terminate()
+		{
+            onTaskDone?.Invoke();
+            active?.Finish();
+
+            foreach (var task in tasks.ToList())
+            {
+                task.Finish();
+            }
+
+            tasks = new();
+            active = null;
+            onTaskDone = null;
+			shouldTerminate = false;
+        }
 
 		public override void _Process(double delta)
 		{
@@ -43,11 +54,8 @@ namespace Game.Pawn.AI
 			{
 				if (tasks.Count == 0)
 				{
-					if (onTaskDone != null)
-					{
-						onTaskDone.Invoke();
-						onTaskDone = null;
-					}
+					onTaskDone?.Invoke();
+					onTaskDone = null;
 					return;
 				};
 
@@ -58,10 +66,32 @@ namespace Game.Pawn.AI
 			if (active.IsDone())
 			{
 				active.Complete();
-				active = null;
+                active.Finish();
+                active = null;
+			}
+
+			if (shouldTerminate)
+			{
+				_Terminate();
 			}
 		}
 
-	}
+        public override void _Ready()
+        {
+			StatesProvider.timeCycles.OnUpdateTime += HandleTimePeriodUpdate;
+        }
+
+        public override void _ExitTree()
+        {
+            StatesProvider.timeCycles.OnUpdateTime -= HandleTimePeriodUpdate;
+        }
+
+        private void HandleTimePeriodUpdate(TimeCycles.TimePeriod period)
+		{
+			if (period.periodType != TimeCycles.TimePeriodType.NIGHT) return;
+
+			StatesProvider.CookedMeat.Update(prev => prev - 1);
+		}
+    }
 }
 

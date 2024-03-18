@@ -291,6 +291,7 @@ public partial class navigator : Node2D
             new Vector2(0.5f, -0.5f),
             new Vector2(-0.5f, 0.5f),
             new Vector2(-0.5f, -0.5f),
+            new Vector2(0, 2f),
         };
 
         foreach (var shift in searchShifts)
@@ -319,24 +320,24 @@ public partial class navigator : Node2D
 
     public override void _Draw()
     {
-        foreach (var point in aStarGraphRepresentation.Nodes)
-        {
-            DrawCircle(
-                TileMapToGlobalCoords(point.position),
-                3,
-                point.isFloating ? Colors.Orange : Colors.AliceBlue
-            );
-        }
+        //foreach (var point in aStarGraphRepresentation.Nodes)
+        //{
+        //    DrawCircle(
+        //        TileMapToGlobalCoords(point.position),
+        //        3,
+        //        point.isFloating ? Colors.Orange : Colors.AliceBlue
+        //    );
+        //}
 
-        foreach (var connection in aStarGraphRepresentation.Lines)
-        {
-            DrawLine(
-                TileMapToGlobalCoords(connection.Begin.position),
-                TileMapToGlobalCoords(connection.End.position),
-                Colors.Aqua,
-                width: 3
-            );
-        }
+        //foreach (var connection in aStarGraphRepresentation.Lines)
+        //{
+        //    DrawLine(
+        //        TileMapToGlobalCoords(connection.Begin.position),
+        //        TileMapToGlobalCoords(connection.End.position),
+        //        Colors.Aqua,
+        //        width: 3
+        //    );
+        //}
 
         base._Draw();
     }

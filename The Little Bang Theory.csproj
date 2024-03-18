@@ -13,9 +13,10 @@
     <Folder Include="src\scenes\ui\" />
     <Folder Include="src\scenes\ui\building_ui\" />
     <Folder Include="src\scenes\game\states\" />
-    <Folder Include="src\scenes\game\states\rocks\" />
     <Folder Include="src\scenes\game\input_system\" />
     <Folder Include="src\scenes\game\resources\" />
     <Folder Include="src\scripts\enumerable_extension\" />
+    <Folder Include="src\scenes\game\states\resources\" />
+    <Folder Include="src\scenes\game\time_cycles\" />
   </ItemGroup>
 </Project>

@@ -13,6 +13,8 @@
             value = handler.Invoke(value);
             OnUpdate(value);
         }
+
+        public abstract string GetTitle();
     }
 }
 

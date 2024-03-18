@@ -1,6 +1,5 @@
 ﻿
-using Godot;
-using TheLittleBangTheory.src.scenes.game.states.rocks;
+using Game.State.Resources;
 
 namespace Game.State
 {
@@ -11,6 +10,7 @@ namespace Game.State
 		public static World world;
 		public static Alert alert;
 		public static BuildingUI buildingUI;
+		public static TimeCycles timeCycles;
 
 		public static RocksStore Rocks = new();
 		public static FuelStore Fuel = new();

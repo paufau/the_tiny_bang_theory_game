@@ -59,6 +59,12 @@ public partial class navigator : Node2D
         return ToGlobalCoords(ToMapCoords(global));
     }
 
+    public Vector2 SnapToNearestTileOrigin(Vector2 global)
+    {
+        var halfTileSize = tileMap.TileSet.TileSize / 2;
+        return ToGlobalCoords(ToMapCoords(global)) + new Vector2(-halfTileSize.X, halfTileSize.Y);
+    }
+
     public Vector2I ToMapCoords(Vector2 global)
     {
         return tileMap.LocalToMap(ToLocal(global));

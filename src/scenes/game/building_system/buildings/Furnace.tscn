@@ -4,9 +4,9 @@
 [ext_resource type="Script" path="res://src/scenes/game/building_system/buildings/Furnace.cs" id="1_ys2yu"]
 
 [node name="Furnace" type="Node2D" groups=["furnace"]]
-position = Vector2(-3, 3)
+position = Vector2(2.08165e-12, 2.08165e-12)
 script = ExtResource("1_ys2yu")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(4, -12)
+position = Vector2(8, -16)
 texture = ExtResource("1_k7xck")

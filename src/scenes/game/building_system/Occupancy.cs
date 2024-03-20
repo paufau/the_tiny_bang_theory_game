@@ -4,13 +4,26 @@ using Godot;
 
 namespace Game.BuildingSystem
 {
+	public delegate void OccupancyIterator(int x, int y);
+
 	public class Occupancy
 	{
+		public static void IterateCells(Rect2I rect, OccupancyIterator iterator)
+		{
+            for (var x = rect.Position.X; x < rect.Position.X + rect.Size.X; x++)
+            {
+                for (var y = rect.Position.Y - rect.Size.Y; y < rect.Position.Y; y++)
+                {
+                    iterator.Invoke(x, y);
+                }
+            }
+        }
+
 		public Dictionary<int, Dictionary<int, bool>> occupancyMap = new();
 
 		public void OccupyCell(int x, int y)
 		{
-			Dictionary<int, bool> xDict;
+            Dictionary<int, bool> xDict;
 
 			if (!occupancyMap.TryGetValue(x, out xDict))
 			{
@@ -35,13 +48,7 @@ namespace Game.BuildingSystem
 
 		public void Occupy(Rect2I rect)
 		{
-			for(var x = rect.Position.X; x < rect.Position.X + rect.Size.X; x++)
-			{
-                for (var y = rect.Position.Y; y > rect.Position.Y - rect.Size.Y; y--)
-                {
-					OccupyCell(x, y);
-                }
-            }
+			IterateCells(rect, OccupyCell);
 		}
 
 		public void Occupy(Vector2I mapPosition)
@@ -53,16 +60,13 @@ namespace Game.BuildingSystem
 		{
 			List<Vector2I> occupiedPositions = new();
 
-            for (var x = position.X; x < position.X + size.X; x++)
-            {
-                for (var y = position.Y; y > position.Y - size.Y; y--)
+			IterateCells(new Rect2I(position, size), (x, y) =>
+			{
+                if (IsOccupied(x, y))
                 {
-					if (IsOccupied(x, y))
-					{
-						occupiedPositions.Add(new Vector2I(x, y));
-					}
+                    occupiedPositions.Add(new Vector2I(x, y));
                 }
-            }
+            });
 
 			return occupiedPositions;
         }

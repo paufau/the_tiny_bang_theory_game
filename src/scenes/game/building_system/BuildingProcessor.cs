@@ -13,6 +13,7 @@ public partial class BuildingProcessor : Node2D
 
     private Occupancy occupancy = new();
 
+    private int wallsLayer = 1;
     private int buildingLayer = 3;
 
     public Node2D? activeBuilding;
@@ -98,7 +99,7 @@ public partial class BuildingProcessor : Node2D
         if (activeBuilding == null) return;
 
         var mousePosition = GetGlobalMousePosition();
-        var snappedPosition = nav.SnapToNearestTile(mousePosition);
+        var snappedPosition = nav.SnapToNearestTileOrigin(mousePosition);
         activeBuilding.GlobalPosition = snappedPosition;
 
         QueueRedraw();
@@ -131,26 +132,28 @@ public partial class BuildingProcessor : Node2D
     public void BuildAt()
     {
         var occupiedCells = GetOccupiedCells();
+
         if (occupiedCells.Count > 0)
         {
             return;
         }
 
-        if (activeBuilding is IBuildHandler buildHandler)
+        var buildingClone = (Node2D)activeBuilding.Duplicate();
+        AddChild(buildingClone);
+
+        if (buildingClone is IBuildHandler buildHandler)
         {
             buildHandler.OnBuild();
         }
-        occupancy.Occupy(new Rect2I(
-            position: nav.ToMapCoords(activeBuilding.GlobalPosition),
-            size: activeBuildingIntent.GetSize()));
 
-        var buildingClone = activeBuilding.Duplicate();
+        occupancy.Occupy(new Rect2I(
+            position: nav.ToMapCoords(buildingClone.GlobalPosition),
+            size: activeBuildingIntent.GetSize()));
 
         foreach(var group in buildingClone.GetGroups())
         {
             buildingClone.AddToGroup(group + "_placed");
         }
-        AddChild(buildingClone);
     }
 
     public void SetBuildingIntent(Building building)
@@ -178,21 +181,17 @@ public partial class BuildingProcessor : Node2D
             activeBuildingIntent.GetSize()
         );
 
-        Vector2I position = nav.ToMapCoords(activeBuilding.GlobalPosition);
-        var size = activeBuildingIntent.GetSize();
-        int wallLayer = 1;
-
-        for (var x = position.X; x < position.X + size.X; x++)
+        Occupancy.IterateCells(new Rect2I(
+            nav.ToMapCoords(activeBuilding.GlobalPosition),
+            activeBuildingIntent.GetSize()
+        ), (x, y) =>
         {
-            for (var y = position.Y; y > position.Y - size.Y; y--)
+            var checkVector = new Vector2I(x, y);
+            if (tileMap.GetCellTileData(wallsLayer, checkVector) != null)
             {
-                var checkVector = new Vector2I(x, y);
-                if (tileMap.GetCellTileData(wallLayer, checkVector) != null)
-                {
-                    occupiedCells.Add(checkVector);
-                }
+                occupiedCells.Add(checkVector);
             }
-        }
+        });
 
         return occupiedCells;
     }

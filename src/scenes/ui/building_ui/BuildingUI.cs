@@ -29,7 +29,7 @@ public partial class BuildingUI : CanvasLayer
     private BuildingProcessor buildingProcessor;
 
     [Export]
-    private BreakProcessor diggingProcessor;
+    private DiggingProcessor diggingProcessor;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()

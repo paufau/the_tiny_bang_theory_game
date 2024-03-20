@@ -1,17 +1,18 @@
-[gd_scene load_steps=17 format=3 uid="uid://c7m8djpm085lf"]
+[gd_scene load_steps=18 format=3 uid="uid://c7m8djpm085lf"]
 
 [ext_resource type="Texture2D" uid="uid://x1fuwnml31ok" path="res://src/assets/mainlev_build.png" id="1_586tl"]
 [ext_resource type="Script" path="res://src/scenes/game/camera/camera_controller.cs" id="1_xmdpe"]
 [ext_resource type="Script" path="res://src/scenes/ui/building_ui/BuildingUI.cs" id="2_a81a7"]
-[ext_resource type="Script" path="res://src/scenes/game/building_system/BreakProcessor.cs" id="3_7d8k2"]
 [ext_resource type="Script" path="res://src/scenes/game/navigator/navigator.cs" id="3_ewgdi"]
 [ext_resource type="Script" path="res://src/scenes/ui/resources_ui/ResourcesPanel.cs" id="3_ll00o"]
 [ext_resource type="Script" path="res://src/scenes/game/World.cs" id="3_w7uo8"]
 [ext_resource type="Script" path="res://src/scenes/game/building_system/BuildingProcessor.cs" id="6_clhs6"]
 [ext_resource type="Script" path="res://src/scenes/game/time_cycles/TimeCycles.cs" id="8_6wvaj"]
 [ext_resource type="Script" path="res://src/scenes/game/tasks/TaskAssigner.cs" id="9_kebty"]
+[ext_resource type="Script" path="res://src/scenes/game/building_system/DiggingProcessor.cs" id="11_ls0nu"]
 [ext_resource type="Script" path="res://src/scenes/game/alert/Alert.cs" id="12_63mml"]
 [ext_resource type="Script" path="res://src/scenes/ui/fps/FPS.cs" id="12_enaco"]
+[ext_resource type="Texture2D" uid="uid://bjjoixayrpl4m" path="res://src/assets/breaking_mask.png" id="12_ypes2"]
 [ext_resource type="Script" path="res://src/scenes/game/mission/MissionController.cs" id="13_n8742"]
 [ext_resource type="Script" path="res://src/scenes/ui/time_cycle_ui/TimeCycle.cs" id="14_loa5o"]
 
@@ -1016,7 +1017,7 @@ digButton = NodePath("Dig")
 buildBedButton = NodePath("Build Bed")
 buildFurnaceButton = NodePath("Build Furnace")
 buildingProcessor = NodePath("../World/TileMap/BuildingProcessor")
-diggingProcessor = NodePath("../World/TileMap/BreakingProcessor")
+diggingProcessor = NodePath("../World/TileMap/DiggingProcessor")
 
 [node name="Dig" type="Button" parent="Building UI"]
 anchors_preset = 2
@@ -1140,9 +1141,16 @@ layer_2/tile_data = PackedInt32Array(1638434, 393216, 1, 1703970, 393216, 1, 176
 layer_3/name = "Buildings"
 layer_3/tile_data = PackedInt32Array()
 
-[node name="BreakingProcessor" type="Node2D" parent="World/TileMap" node_paths=PackedStringArray("nav")]
-script = ExtResource("3_7d8k2")
+[node name="DiggingProcessor" type="Node2D" parent="World/TileMap" node_paths=PackedStringArray("nav")]
+script = ExtResource("11_ls0nu")
 nav = NodePath("../../Navigator")
+
+[node name="DiggingRect" type="TextureRect" parent="World/TileMap/DiggingProcessor"]
+texture_repeat = 2
+offset_top = -16.0
+offset_right = 16.0
+texture = ExtResource("12_ypes2")
+stretch_mode = 1
 
 [node name="BuildingProcessor" type="Node2D" parent="World/TileMap" node_paths=PackedStringArray("nav")]
 script = ExtResource("6_clhs6")

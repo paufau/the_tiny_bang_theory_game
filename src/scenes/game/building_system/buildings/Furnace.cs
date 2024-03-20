@@ -1,15 +1,10 @@
+using Game.BuildingSystem;
 using Game.Task;
 using Godot;
-using System;
 
-public partial class Furnace : Node2D
+public partial class Furnace : Node2D, IBuildHandler
 {
     private CookMeatTask cookMeatTask;
-
-    public override void _Ready()
-    {
-        PlanTask();
-    }
 
     private void PlanTask()
     {
@@ -21,8 +16,8 @@ public partial class Furnace : Node2D
         TaskTracker.Instance().PlanTask(cookMeatTask);
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
+    public void OnBuild()
     {
+        PlanTask();
     }
 }

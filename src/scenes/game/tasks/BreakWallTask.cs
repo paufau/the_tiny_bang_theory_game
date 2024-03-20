@@ -9,7 +9,7 @@ namespace Game.Task
     {
         private pawn_controller pawn;
         private Vector2 wallPosition;
-        private BreakProcessor breakProcessor;
+        private DiggingProcessor breakProcessor;
         private bool isWallBroken = false;
         private PackedScene breakingMask;
         private Node2D breakingMaskInstance;
@@ -59,7 +59,7 @@ namespace Game.Task
             pawn.AI.AddTask(goToTask);
         }
 
-        public BreakWallTask(Vector2 wallPosition, BreakProcessor breakProcessor, Action onGainResource)
+        public BreakWallTask(Vector2 wallPosition, DiggingProcessor breakProcessor, Action onGainResource)
         {
             breakingMask = ResourceLoader.Load<PackedScene>("res://src/scenes/game/building_system/BreakingMask.tscn");
             breakingMaskInstance = (Node2D)breakingMask.Instantiate();

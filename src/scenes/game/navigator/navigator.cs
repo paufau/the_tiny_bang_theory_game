@@ -275,9 +275,14 @@ public partial class navigator : Node2D
         }
     }
 
+    public Vector2I SnapToTileCoordsOrigin(Vector2 globalPoint)
+    {
+        return ToMapCoords(SnapToNearestTile(globalPoint)) + Vector2I.Up;
+    }
+
     public void AddFloatingPoint(Vector2 globalPoint)
     {
-        var mapPoint = tileMap.LocalToMap(ToLocal(globalPoint));
+        var mapPoint = SnapToTileCoordsOrigin(globalPoint);
         var pointInstance = SafeAddPointInstance(mapPoint);
         pointInstance.isFloating = true;
         ConnectPointInstance(pointInstance);
@@ -326,24 +331,24 @@ public partial class navigator : Node2D
 
     public override void _Draw()
     {
-        //foreach (var point in aStarGraphRepresentation.Nodes)
-        //{
-        //    DrawCircle(
-        //        TileMapToGlobalCoords(point.position),
-        //        3,
-        //        point.isFloating ? Colors.Orange : Colors.AliceBlue
-        //    );
-        //}
+        foreach (var point in aStarGraphRepresentation.Nodes)
+        {
+            DrawCircle(
+                TileMapToGlobalCoords(point.position),
+                3,
+                point.isFloating ? Colors.Orange : Colors.AliceBlue
+            );
+        }
 
-        //foreach (var connection in aStarGraphRepresentation.Lines)
-        //{
-        //    DrawLine(
-        //        TileMapToGlobalCoords(connection.Begin.position),
-        //        TileMapToGlobalCoords(connection.End.position),
-        //        Colors.Aqua,
-        //        width: 3
-        //    );
-        //}
+        foreach (var connection in aStarGraphRepresentation.Lines)
+        {
+            DrawLine(
+                TileMapToGlobalCoords(connection.Begin.position),
+                TileMapToGlobalCoords(connection.End.position),
+                Colors.Aqua,
+                width: 3
+            );
+        }
 
         base._Draw();
     }

@@ -11,6 +11,7 @@ namespace Game.State
 		public static Alert alert;
 		public static BuildingUI buildingUI;
 		public static TimeCycles timeCycles;
+		public static SelectionHelper selectionHelper;
 
 		public static RocksStore Rocks = new();
 		public static FuelStore Fuel = new();
